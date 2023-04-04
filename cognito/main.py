@@ -14,6 +14,8 @@ class CognitoIdentityProviderWrapper:
         self.client_id = client_id
         self.client_secret = client_secret
 
+        
+    # Esta funcion sirve para registrar y para logearse
     def sign_up_user(self, user_name, password, user_email):
         """
         Signs up a new user with Amazon Cognito. This action prompts Amazon Cognito
@@ -50,6 +52,7 @@ class CognitoIdentityProviderWrapper:
                 raise
         return confirmed
     
+    
     def confirm_user_sign_up(self, user_name, confirmation_code):
         """
         Confirms a previously created user. A user must be confirmed before they
@@ -74,3 +77,26 @@ class CognitoIdentityProviderWrapper:
             raise
         else:
             return True
+        
+        
+        def resend_confirmation(self, user_name):
+        """
+        Prompts Amazon Cognito to resend an email with a new confirmation code.
+
+        :param user_name: The name of the user who will receive the email.
+        :return: Delivery information about where the email is sent.
+        """
+        try:
+            kwargs = {
+                'ClientId': self.client_id, 'Username': user_name}
+            if self.client_secret is not None:
+                kwargs['SecretHash'] = self._secret_hash(user_name)
+            response = self.cognito_idp_client.resend_confirmation_code(**kwargs)
+            delivery = response['CodeDeliveryDetails']
+        except ClientError as err:
+            logger.error(
+                "Couldn't resend confirmation to %s. Here's why: %s: %s", user_name,
+                err.response['Error']['Code'], err.response['Error']['Message'])
+            raise
+        else:
+            return delivery
