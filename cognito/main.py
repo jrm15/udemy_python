@@ -49,6 +49,42 @@ class CognitoIdentityProviderWrapper:
                     err.response['Error']['Code'], err.response['Error']['Message'])
                 raise
         return confirmed
+    
+     def sign_up_user(self, user_name, password, user_email):
+        """
+        Signs up a new user with Amazon Cognito. This action prompts Amazon Cognito
+        to send an email to the specified email address. The email contains a code that
+        can be used to confirm the user.
+
+        When the user already exists, the user status is checked to determine whether
+        the user has been confirmed.
+
+        :param user_name: The user name that identifies the new user.
+        :param password: The password for the new user.
+        :param user_email: The email address for the new user.
+        :return: True when the user is already confirmed with Amazon Cognito.
+                 Otherwise, false.
+        """
+        try:
+            kwargs = {
+                'ClientId': self.client_id, 'Username': user_name, 'Password': password,
+                'UserAttributes': [{'Name': 'email', 'Value': user_email}]}
+            if self.client_secret is not None:
+                kwargs['SecretHash'] = self._secret_hash(user_name)
+            response = self.cognito_idp_client.sign_up(**kwargs)
+            confirmed = response['UserConfirmed']
+        except ClientError as err:
+            if err.response['Error']['Code'] == 'UsernameExistsException':
+                response = self.cognito_idp_client.admin_get_user(
+                    UserPoolId=self.user_pool_id, Username=user_name)
+                logger.warning("User %s exists and is %s.", user_name, response['UserStatus'])
+                confirmed = response['UserStatus'] == 'CONFIRMED'
+            else:
+                logger.error(
+                    "Couldn't sign up %s. Here's why: %s: %s", user_name,
+                    err.response['Error']['Code'], err.response['Error']['Message'])
+                raise
+        return confirmed
 
     def confirm_user_sign_up(self, user_name, confirmation_code):
         """
