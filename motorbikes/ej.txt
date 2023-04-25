@@ -1,0 +1,37 @@
+Quiero que te imagines un concesionario de motos. Esta clase será para representar sus motocicletas.
+Todas las motocicletas del concesionario son nuevas. Por lo tanto, vamos a añadir un atributo de clase para especificar
+ese valor siempre en todas las motos.
+Las caracteristicas de la moto son las siguientes:
+* color.
+* matricula.
+* combustible_litros.
+* numero_ruedas.
+* marca.
+* modelo.
+* fecha_fabricacion.
+* velocidad_punta.
+* peso.
+Ademas tendra el motor que dira si está en marcha o detenido por defecto sera False
+
+Crea dos métodos inteligentes, arrancar y detener que representarán estas dos acciones con las motocicletas. Estos deben
+ ser capaces de informar en la consola de las siguientes cosas.
+Método arrancar():
+
+Si el motor está detenido, se indica que el motor ha arrancado.
+Si el motor está ya en marcha y se intenta arrancar de nuevo, se indica que el motor ya estaba en marcha.
+
+Método detener():
+
+Si el motor está en marcha, se indica que el motor se ha detenido.
+Si el motor está ya detenido, y se intenta detener de nuevo, se indica que el motor ya estaba detenido.
+
+Metodo respostar():
+Tendra que decirnos si podriamos echar x litros en nuestra moto o pasamos el limite.
+
+Vamos a poder comparar dos motos si una es mayor o menor que otra teniendo en cuenta si su velocidad punta es mayor.
+Vamos a poder sacar la informacion de la moto solamente imprimiendo el objeto de la clase.
+Vamos a poder sumar dos motos, solamente cuando la fecha de fabricacion, numero_ruedas y marca sea la misma, y tendra
+que darnos una moto con un color random entre las dos motos, la suma de los litros de combustible, la suma de
+velocidad punta y peso.
+
+
