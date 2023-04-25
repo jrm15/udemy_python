@@ -15,6 +15,7 @@ print(user_2.name)
 
 # si los objetos van a ser iguales, se utilizan los constructores (initialize)
 
+
 class Alumn:
     def __init__(self, name, curse):
         self.name = name
@@ -24,6 +25,7 @@ class Alumn:
 # SIEMPRE SE AÑADE EL PARAMETRO SELF EL PRIMERO
     def up_curse(self):
         self.curse += 1
+
 
 alumn_1 = Alumn('Javi', 2)
 print(alumn_1.name)

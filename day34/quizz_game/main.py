@@ -1,14 +1,13 @@
 from comprobe_result import Comprobe
-from data import question_data
-import random
+from data import Question
 
+api = "https://opentdb.com/api.php"
+parameters = {
+    "amount": 10,
+    "category": 21,
+    "type": "boolean"}
 
-def question():
-    number_aleat = int(random.randrange(1, 13))
-    text = question_data[number_aleat]["text"]
-    answer = question_data[number_aleat]["answer"]
-    print (text)
-    return answer
+trivial = Question()
 
 
 def score(answ, score):
@@ -31,7 +30,8 @@ def final(score):
 score_total = [0, 0]
 finaly = True
 while finaly:
-    answer = question()
+    print(trivial.question(api, parameters))
+    answer = trivial.result(api, parameters)
     result = str(input('True or False?: '))
     comprobe = Comprobe(answer)
     result = comprobe.result(result)
