@@ -7,14 +7,20 @@ class Moto:
 
     def __init__(self, color: str, matricula: str, combustible: int, ruedas: int, marca: str, modelo: str,
                  fabricacion: int, velocidad_punta: int, peso: int, arranque_motor: bool = False):
-        self.color = color
-        self.matricula = matricula
+        if isinstance(color, str):
+            self.color = color
+        else:
+            raise ValueError("Color tiene que ser de tipo string")
+        if isinstance(matricula, str):
+            self.matricula = matricula
+        else:
+            raise ValueError("Matricula tiene que ser de tipo entero")
         if combustible <= self.max_litres:
             self.combustible = combustible
         else:
             self.combustible = self.max_litres
         self.ruedas = ruedas
-        self.marca = marca
+        self.__marca = marca
         self.modelo = modelo
         self.fabricacion = fabricacion
         self.velocidad_punta = velocidad_punta
@@ -35,7 +41,7 @@ class Moto:
                f"matricula = {self.matricula}\n" \
                f"combustible = {self.combustible}\n" \
                f"ruedas = {self.ruedas}\n" \
-               f"marca = {self.marca}\n" \
+               f"marca = {self.__marca}\n" \
                f"modelo = {self.modelo}\n" \
                f"fabricacion = {self.fabricacion}\n" \
                f"velocidad punta = {self.velocidad_punta}\n" \
@@ -45,10 +51,19 @@ class Moto:
     def __add__(self, other):
         lista = [self.color, other.color]
         color_random = random.choice(lista)
-        if self.fabricacion == other.fabricacion and self.ruedas == other.ruedas and self.marca == other.marca:
+        if self.fabricacion == other.fabricacion and self.ruedas == other.ruedas and self.__marca == other.__marca:
             return Moto(color=color_random, matricula="", combustible=self.combustible + other.combustible,
                         ruedas=0, marca="", modelo="", fabricacion=0, velocidad_punta=self.velocidad_punta
                         + other.velocidad_punta, peso=self.peso + other.peso)
+
+    def get_marca(self):
+        return self.__marca
+
+    def motor(self):
+        if not self.arranque_motor:
+            self.arranque_motor = True
+        else:
+            self.arranque_motor = False
 
     def metodo_arrancar(self):
         if self.arranque_motor:
@@ -64,7 +79,7 @@ class Moto:
             msg = "El motor ya estaba detenido"
         return msg
 
-    def metodo_respostar(self):
+    def metodo_repostar(self):
         if self.combustible < self.max_litres:
             rest = self.max_litres - self.combustible
             msg = f"Puedes respostar {rest} litros hasta el limite"
